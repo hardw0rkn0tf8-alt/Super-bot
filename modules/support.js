@@ -10,9 +10,9 @@ const fs   = require('fs');
 const path = require('path');
 
 const TICKETS_FILE     = path.join(__dirname, '..', 'tickets.json');
-const SUPPORT_CHANNEL  = process.env.SUPPORT_CHANNEL  ? parseInt(process.env.SUPPORT_CHANNEL)  : null;
-const TICKET_LOG_CHANNEL = process.env.TICKET_LOG_CHANNEL ? parseInt(process.env.TICKET_LOG_CHANNEL) : null;
-const STAFF_ROLE_ID    = process.env.STAFF_ROLE_ID    ? parseInt(process.env.STAFF_ROLE_ID)    : null;
+const SUPPORT_CHANNEL  = 1502225607348715621n;
+const TICKET_LOG_CHANNEL = 1502226723952001085n;
+const STAFF_ROLE_ID    = 1502230128938192897n;
 
 const GAMES = [
   'Arc Raiders','Rust','Escape from Tarkov','Fortnite',

@@ -28,14 +28,15 @@ const { getAllProducts, getProduct, setProductUrl, getProductChunks, getProductB
 // ─── ENV Config ───────────────────────────────────────────────────────────────
 const TOKEN          = process.env.DISCORD_TOKEN;
 const CLIENT_ID      = process.env.CLIENT_ID;
-const GUILD_ID       = process.env.GUILD_ID || null;
+const GUILD_ID       = '1440084155684618330';
 
 // Verify/Welcome module
 const VERIFIED_ROLE  = process.env.VERIFIED_ROLE_NAME  || 'Verified';
-const VERIFY_CHANNEL = process.env.VERIFY_CHANNEL_NAME || 'get-verify';
-const WELCOME_CHANNEL= process.env.WELCOME_CHANNEL_NAME|| 'welcome';
-const WELCOME_CHANNEL_ID = '1400773021274341396';
-const INVITES_CHANNEL= process.env.INVITES_CHANNEL_NAME|| 'invites';
+const VERIFIED_ROLE_ID = '1502230259930763344';
+const VERIFY_CHANNEL = 'get-verified';
+const WELCOME_CHANNEL= 'welcomer';
+const WELCOME_CHANNEL_ID = '1502227709147746335';
+const INVITES_CHANNEL= 'invite-tracker';
 const INVITES_NEEDED = parseInt(process.env.INVITES_NEEDED || '10');
 
 // Updates module
@@ -617,7 +618,7 @@ client.on('interactionCreate', async interaction => {
 
       // Verify button
       if (customId === 'verify_button') {
-        const verifiedRole = guild.roles.cache.find(r => r.name === VERIFIED_ROLE);
+        const verifiedRole = guild.roles.cache.get(VERIFIED_ROLE_ID);
         if (!verifiedRole) { await interaction.reply({ content: '⚠️ Verified role not found.', ephemeral: true }); autoDelete(interaction, 5000); return; }
         if (member.roles.cache.has(verifiedRole.id)) { await interaction.reply({ content: '✅ You are already verified!', ephemeral: true }); autoDelete(interaction, 5000); return; }
         try { await member.roles.add(verifiedRole); await interaction.reply({ content: '🎉 You have been verified! Welcome!', ephemeral: true }); autoDelete(interaction, 5000); }

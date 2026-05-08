@@ -9,7 +9,7 @@ const MUTE_DURATION_MINUTES = parseInt(process.env.MUTE_DURATION_MINUTES || '30'
 const SPAM_MESSAGE_LIMIT    = parseInt(process.env.SPAM_MESSAGE_LIMIT    || '3');
 const SPAM_TIME_WINDOW      = parseInt(process.env.SPAM_TIME_WINDOW      || '10'); // seconds
 
-let LOG_CHANNEL_ID = process.env.LOG_CHANNEL_ID ? parseInt(process.env.LOG_CHANNEL_ID) : null;
+let LOG_CHANNEL_ID = '1502226590786912347';
 
 // ─── Mutable lists (can be changed via commands) ───────────────────────────
 let BANNED_LINKS = [
