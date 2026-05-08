@@ -345,20 +345,20 @@ client.on('interactionCreate', async interaction => {
         const everyoneRole = guild.roles.everyone;
         const botRole = guild.members.me.roles.highest;
         await guild.channels.fetch();
-        // Channel IDs that Verified role is allowed to see (besides get-verify)
-        const VERIFIED_ALLOWED_IDS = [
-          '1481172050801463367', // support channel
-          '1242139449320804393', // Support 1 voice
+        // Staff-only channels hidden from verified members
+        const STAFF_ONLY_IDS = [
+          '1502226590786912347', // logs
+          '1502226723952001085', // ticket-logs
         ];
         for (const [, ch] of guild.channels.cache) {
           if (ch.name === VERIFY_CHANNEL) continue;
           try {
             await ch.permissionOverwrites.edit(everyoneRole, { ViewChannel: false, SendMessages: false });
             await ch.permissionOverwrites.edit(botRole, { ViewChannel: true, SendMessages: true });
-            if (VERIFIED_ALLOWED_IDS.includes(ch.id)) {
-              await ch.permissionOverwrites.edit(verifiedRole, { ViewChannel: true, SendMessages: true });
-            } else {
+            if (STAFF_ONLY_IDS.includes(ch.id)) {
               await ch.permissionOverwrites.edit(verifiedRole, { ViewChannel: false });
+            } else {
+              await ch.permissionOverwrites.edit(verifiedRole, { ViewChannel: true, SendMessages: true });
             }
           } catch (_) {}
         }
