@@ -340,7 +340,7 @@ client.on('interactionCreate', async interaction => {
       if (cmd === 'setup-verify') {
         await interaction.deferReply({ ephemeral: true });
         const guild = interaction.guild;
-        let verifiedRole = guild.roles.cache.find(r => r.name === VERIFIED_ROLE);
+        let verifiedRole = guild.roles.cache.get(VERIFIED_ROLE_ID);
         if (!verifiedRole) verifiedRole = await guild.roles.create({ name: VERIFIED_ROLE, color: 0x5865f2 });
         const everyoneRole = guild.roles.everyone;
         const botRole = guild.members.me.roles.highest;
