@@ -534,16 +534,16 @@ client.on('interactionCreate', async interaction => {
           .setColor(0x5865F2)
           .setTitle(title)
           .setURL(url)
-          .setDescription(\`🎬 [Click to watch](\${url})\`)
-          .setFooter({ text: \`\${BOT_NAME} | \${SITE_URL}\`, iconURL: client.user.displayAvatarURL() })
+          .setDescription(`🎬 [Click to watch](${url})`)
+          .setFooter({ text: `${BOT_NAME} | ${SITE_URL}`, iconURL: client.user.displayAvatarURL() })
           .setTimestamp();
         // Add thumbnail for known services
         if (url.includes('youtube.com') || url.includes('youtu.be')) {
           const videoId = url.split('v=')[1]?.split('&')[0] || url.split('/').pop();
-          embed.setImage(\`https://img.youtube.com/vi/\${videoId}/maxresdefault.jpg\`);
+          embed.setImage(`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`);
         }
         await targetCh.send({ embeds: [embed] });
-        await interaction.reply({ content: \`✅ Video posted to <#\${targetCh.id}>\`, flags: 64 }); autoDelete(interaction, 5000);
+        await interaction.reply({ content: `✅ Video posted to <#${targetCh.id}>`, flags: 64 }); autoDelete(interaction, 5000);
         return;
       }
 
