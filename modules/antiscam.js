@@ -221,6 +221,19 @@ async function onMessage(message, client) {
   const { found: profane } = hasProfanity(content);
   if (profane) { await handleViolation(message, 'Profanity — keep it clean', client); return; }
 
+  // Block ALL links except GIFs and tenor/giphy embeds
+  const urlRegex = /https?:\/\/[^\s]+/gi;
+  const allLinks = content.match(urlRegex) || [];
+  const allowedDomains = ['tenor.com', 'giphy.com', 'media.discordapp.net', 'cdn.discordapp.com', 'imgur.com'];
+  const gifExtensions = ['.gif'];
+  for (const link of allLinks) {
+    const isGif = gifExtensions.some(ext => link.toLowerCase().includes(ext));
+    const isAllowed = allowedDomains.some(d => link.toLowerCase().includes(d));
+    if (!isGif && !isAllowed) {
+      await handleViolation(message, 'Links are not allowed', client);
+      return;
+    }
+  }
   const { found: hasLink, reason: linkReason } = hasBannedLink(content);
   if (hasLink) { await handleViolation(message, linkReason, client); return; }
 
