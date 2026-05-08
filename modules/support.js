@@ -61,7 +61,7 @@ async function sendStaffLog(client, user, ticketData) {
       { name: 'Issue',  value: ticketData.issue,       inline: false },
     )
     .setThumbnail(user.displayAvatarURL())
-    .setFooter({ text: `Opened at ${ticketData.opened_at} • UH Support` });
+    .setFooter({ text: `Opened at ${ticketData.opened_at} • Esp Gang Support` });
 
   await logCh.send({
     content: STAFF_ROLE_ID ? `<@&${STAFF_ROLE_ID}> New ticket from **${user.username}**` : `New ticket from **${user.username}**`,
@@ -103,13 +103,13 @@ async function handleInteraction(interaction, client) {
     const msgs = await interaction.channel.messages.fetch({ limit: 100 });
     for (const [, m] of msgs) if (m.author.id === client.user.id) try { await m.delete(); } catch (_) {}
     const embed = new EmbedBuilder()
-      .setTitle('UH Support').setColor(0x5865f2)
+      .setTitle('Esp Gang Support').setColor(0x5865f2)
       .setDescription(
         'Click a button below to start a support ticket. Our assistant will help you with your request.\n\n' +
         '**READ FAQ BEFORE MAKING A SUPPORT TICKET**\n\n' +
         '**TYPE !close IF YOU HAVE MULTIPLE TICKETS**\n\n' +
         '**How it works**\n1. Click the appropriate button below\n2. I\'ll DM you to start a conversation\n3. Describe your issue and I\'ll help!\n\n' +
-        '© 2026 UH. All rights reserved.'
+        '© 2026 Esp Gang. All rights reserved.'
       );
     const row = new ActionRowBuilder().addComponents(
       new ButtonBuilder().setCustomId('support_hwid').setLabel('HWID Reset').setStyle(ButtonStyle.Secondary),
@@ -151,7 +151,7 @@ async function handleInteraction(interaction, client) {
       const embed = new EmbedBuilder()
         .setDescription(`**Staff: ${interaction.user.username}** — ${msg}`)
         .setColor(0x57F287).setTimestamp()
-        .setAuthor({ name: 'UH Support Reply', iconURL: interaction.user.displayAvatarURL() });
+        .setAuthor({ name: 'Esp Gang Support Reply', iconURL: interaction.user.displayAvatarURL() });
       await dm.send({ embeds: [embed] });
       await interaction.reply({ content: `✅ Reply sent to **${user.username}**.`, ephemeral: true });
     } catch (_) { await interaction.reply({ content: '❌ Could not DM that user.', ephemeral: true }); }
@@ -211,7 +211,7 @@ async function handleInteraction(interaction, client) {
     try {
       const dm = await interaction.user.createDM();
       const embed = new EmbedBuilder()
-        .setTitle('UH Support Assistant').setColor(0x5865f2)
+        .setTitle('Esp Gang Support Assistant').setColor(0x5865f2)
         .setDescription(
           'Hi there! I\'m here to help you troubleshoot any issues.\n\n' +
           '**Just describe your problem** and a staff member will assist you!\n\n' +
@@ -219,7 +219,7 @@ async function handleInteraction(interaction, client) {
           '💡 **Tips for best results**\n• Include any error codes you see\n• Describe what you were doing when the issue occurred\n• Mention what you\'ve already tried\n\n' +
           '❌ **To end the session**\nType `!close` to close this support ticket'
         )
-        .setFooter({ text: 'UH Support System' });
+        .setFooter({ text: 'Esp Gang Support System' });
       await dm.send({ embeds: [embed] });
     } catch (_) {
       await interaction.followup.send({ content: '❌ I couldn\'t DM you. Please enable DMs from server members.', ephemeral: true });
@@ -264,7 +264,7 @@ async function handleInteraction(interaction, client) {
       const embed = new EmbedBuilder()
         .setDescription(`**Staff: ${interaction.user.username}** — ${replyText}`)
         .setColor(0x57F287).setTimestamp()
-        .setAuthor({ name: 'UH Support Reply', iconURL: interaction.user.displayAvatarURL() });
+        .setAuthor({ name: 'Esp Gang Support Reply', iconURL: interaction.user.displayAvatarURL() });
       await dm.send({ embeds: [embed] });
       await interaction.reply({ content: `✅ Reply sent to **${user.username}**!`, ephemeral: true });
     } catch (_) { await interaction.reply({ content: '❌ Could not DM that user.', ephemeral: true }); }
@@ -287,7 +287,7 @@ async function handleInteraction(interaction, client) {
       if (user) {
         const dm = await user.createDM();
         await dm.send({ embeds: [new EmbedBuilder().setTitle('✅ Support Session Closed')
-          .setDescription('Thanks for using UH support! If you need help again, click a support button in the server.')
+          .setDescription('Thanks for using Esp Gang support! If you need help again, click a support button in the server.')
           .setColor(0x57F287)] });
       }
     } catch (_) {}
@@ -312,7 +312,7 @@ async function handleDM(message, client) {
 
   await message.channel.send({ embeds: [new EmbedBuilder()
     .setTitle('✅ Support Session Closed')
-    .setDescription('Thanks for using UH support! If you need help again, click a support button in the server.')
+    .setDescription('Thanks for using Esp Gang support! If you need help again, click a support button in the server.')
     .setColor(0x57F287)
     .addFields({ name: 'Today at', value: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) })] });
 

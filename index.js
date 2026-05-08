@@ -1,6 +1,6 @@
 /**
  * ╔══════════════════════════════════════════════════════╗
- * ║          UH SERVICES — SUPER BOT  v2.0.0            ║
+ * ║          ESP GANG — SUPER BOT  v2.0.0            ║
  * ║  Combines: Verify/Welcome • Updates • Anti-Scam     ║
  * ║            DM Support • 2FA Auth Server             ║
  * ╚══════════════════════════════════════════════════════╝
@@ -40,8 +40,8 @@ const INVITES_CHANNEL= 'invite-tracker';
 const INVITES_NEEDED = parseInt(process.env.INVITES_NEEDED || '10');
 
 // Updates module
-const BOT_NAME  = process.env.BOT_NAME  || 'UH Services';
-const SITE_URL  = process.env.SITE_URL  || '';
+const BOT_NAME  = process.env.BOT_NAME  || 'Esp Gang';
+const SITE_URL  = process.env.SITE_URL  || 'https://espgang.com';
 
 if (!TOKEN || !CLIENT_ID) {
   console.error('❌ Missing DISCORD_TOKEN or CLIENT_ID in environment variables!');
@@ -88,7 +88,7 @@ const productLastStatus  = {};
 const websiteMessages    = {};
 const resellerMessages   = {};
 const pendingUpdates     = {};
-const resellerLinks      = { apply: 'https://uhservicess.netlify.app/', panel: 'https://uhservicess.netlify.app/' };
+const resellerLinks      = { apply: 'https://espgang.com/', panel: 'https://espgang.com/' };
 
 const UPDATE_TYPES = {
   status_change:  { label: 'Status Change',  emoji: '🔄' },
@@ -201,7 +201,7 @@ const allCommands = [...ownCommands, ...support.supportCommands];
 // ─── Ready ────────────────────────────────────────────────────────────────────
 client.once('ready', async () => {
   console.log(`\n╔════════════════════════════════════╗`);
-  console.log(`║  ✅ UH SUPER BOT online            ║`);
+  console.log(`║  ✅ ESP GANG BOT online            ║`);
   console.log(`║  Logged in as: ${client.user.tag.padEnd(19)}║`);
   console.log(`╚════════════════════════════════════╝\n`);
 
@@ -322,7 +322,7 @@ client.on('interactionCreate', async interaction => {
       // ── /commands ──────────────────────────────────────────────────────────
       if (cmd === 'commands') {
         const embed = new EmbedBuilder()
-          .setTitle('🤖 UH Super Bot — All Commands').setColor(0x5865F2)
+          .setTitle('🤖 Esp Gang Bot — All Commands').setColor(0x5865F2)
           .addFields(
             { name: '🔐 Verification & Invites', value: '`/setup-verify` — Set up verification channel\n`/setup-invites` — Set up invite reward channel', inline: false },
             { name: '📦 Products & Downloads', value: '`/downloads` — Browse & download products\n`/setupdownloads` — Post download panel to #downloads\n`/setdownload` — Set a product download link', inline: false },
@@ -525,7 +525,7 @@ client.on('interactionCreate', async interaction => {
         await interaction.deferReply({ flags: 64 });
         const resCh = interaction.guild.channels.cache.find(c => c.name.toLowerCase().includes('reseller') && c.type === ChannelType.GuildText) || interaction.channel;
         const embed = new EmbedBuilder().setColor(0x5865F2).setDescription(
-          '# UH SERVICES IS LOOKING FOR RESELLERS\n\n**Did you know you can make up to $5000+ monthly reselling our products?**\n\n## Why Start Reselling?\n- All keys are bought through our **centralized panel**, where you can **generate, manage, reset, and freeze keys**\n- We provide **10+** of the **markets leading products**\n- We offer all of our resellers a **minimum discount of 50% off keys** right away\n- We take care of the hard part. **Development, testing, updates, and more are all handled by us**\n- We offer **priority support** in your personal ticket\n- We provide **tips on how to grow and expand** your brand\n- We offer **dynamic delivery** so you can link your site to our panel for seamless product delivery\n- **Pressure free environment**, we don\'t force you to deposit\n- Access to a community of over **100+ successful resellers**'
+          '# ESP GANG IS LOOKING FOR RESELLERS\n\n**Did you know you can make up to $5000+ monthly reselling our products?**\n\n## Why Start Reselling?\n- All keys are bought through our **centralized panel**, where you can **generate, manage, reset, and freeze keys**\n- We provide **10+** of the **markets leading products**\n- We offer all of our resellers a **minimum discount of 50% off keys** right away\n- We take care of the hard part. **Development, testing, updates, and more are all handled by us**\n- We offer **priority support** in your personal ticket\n- We provide **tips on how to grow and expand** your brand\n- We offer **dynamic delivery** so you can link your site to our panel for seamless product delivery\n- **Pressure free environment**, we don\'t force you to deposit\n- Access to a community of over **100+ successful resellers**'
         );
         const row = new ActionRowBuilder().addComponents(
           new ButtonBuilder().setLabel('APPLY HERE!').setEmoji('📋').setStyle(ButtonStyle.Link).setURL(resellerLinks.apply),
