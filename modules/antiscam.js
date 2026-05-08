@@ -222,13 +222,13 @@ async function onMessage(message, client) {
   if (profane) { await handleViolation(message, 'Profanity — keep it clean', client); return; }
 
   // Block ALL links except GIFs and tenor/giphy embeds
-  const urlRegex = /https?:\/\/[^\s]+/gi;
+  const urlRegex = /(?:https?:\/\/|www\.)[^\s]+|(?:[a-zA-Z0-9-]+\.(?:com|net|org|gg|io|co|tv|me|app|xyz|info|biz|us|uk|ca|ru|de|fr)(?:\/[^\s]*)?)/gi;
   const allLinks = content.match(urlRegex) || [];
   const allowedDomains = ['tenor.com', 'giphy.com', 'media.discordapp.net', 'cdn.discordapp.com', 'imgur.com'];
-  const gifExtensions = ['.gif'];
   for (const link of allLinks) {
-    const isGif = gifExtensions.some(ext => link.toLowerCase().includes(ext));
-    const isAllowed = allowedDomains.some(d => link.toLowerCase().includes(d));
+    const lower = link.toLowerCase();
+    const isGif = lower.includes('.gif');
+    const isAllowed = allowedDomains.some(d => lower.includes(d));
     if (!isGif && !isAllowed) {
       await handleViolation(message, 'Links are not allowed', client);
       return;
