@@ -10,9 +10,9 @@ const fs   = require('fs');
 const path = require('path');
 
 const TICKETS_FILE     = path.join(__dirname, '..', 'tickets.json');
-const SUPPORT_CHANNEL  = 1502225607348715621n;
-const TICKET_LOG_CHANNEL = 1502226723952001085n;
-const STAFF_ROLE_ID    = 1502230128938192897n;
+const SUPPORT_CHANNEL  = '1502225607348715621';
+const TICKET_LOG_CHANNEL = '1502226723952001085';
+const STAFF_ROLE_ID    = '1502230128938192897';
 
 const GAMES = [
   'Arc Raiders','Rust','Escape from Tarkov','Fortnite',
@@ -48,7 +48,8 @@ function isStaff(member) {
 
 async function sendStaffLog(client, user, ticketData) {
   if (!TICKET_LOG_CHANNEL) return;
-  const logCh = client.channels.cache.get(String(TICKET_LOG_CHANNEL));
+  let logCh = client.channels.cache.get(String(TICKET_LOG_CHANNEL));
+  if (!logCh) try { logCh = await client.channels.fetch(String(TICKET_LOG_CHANNEL)); } catch (_) {}
   if (!logCh) return;
   const embed = new EmbedBuilder()
     .setTitle(`🎫 New Ticket — ${ticketData.type}`)

@@ -121,7 +121,7 @@ function getProductColor(name) {
 function hasAccess(interaction) {
   const member = interaction.member;
   if (member.permissions.has('Administrator')) return true;
-  if (member.roles.cache.some(r => r.name === 'MODERATOR')) return true;
+  if (member.roles.cache.has('1502230128938192897')) return true;
   return false;
 }
 
