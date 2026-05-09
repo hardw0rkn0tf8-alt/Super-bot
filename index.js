@@ -191,6 +191,10 @@ const ownCommands = [
     .addAttachmentOption(o => o.setName('image').setDescription('Image to post').setRequired(true))
     .addStringOption(o => o.setName('message').setDescription('Optional message').setRequired(false))
     .addStringOption(o => o.setName('channel').setDescription('Channel to post in').setRequired(false)),
+  new SlashCommandBuilder().setName('postvideo').setDescription('Admin: Post a video link as an embed')
+    .addStringOption(o => o.setName('url').setDescription('Streamable, YouTube or video URL').setRequired(true))
+    .addStringOption(o => o.setName('title').setDescription('Optional title').setRequired(false))
+    .addStringOption(o => o.setName('channel').setDescription('Channel to post in').setRequired(false)),
   new SlashCommandBuilder().setName('setresellerlinks').setDescription('Admin: Update Apply and Preview Panel button links'),
   new SlashCommandBuilder().setName('commands').setDescription('Show all available bot commands'),
 ].map(c => c.toJSON());
