@@ -331,7 +331,7 @@ client.on('interactionCreate', async interaction => {
             { name: '🔐 Verification & Invites', value: '`/setup-verify` — Set up verification channel\n`/setup-invites` — Set up invite reward channel', inline: false },
             { name: '📦 Products & Downloads', value: '`/downloads` — Browse & download products\n`/setupdownloads` — Post download panel to #downloads\n`/setdownload` — Set a product download link', inline: false },
             { name: '📣 Updates & Status', value: '`/postupdate` — Post a product update\n`/statusupdate` — Post a status update\n`/announce` — Send a custom announcement', inline: false },
-            { name: '🌐 Server Setup', value: '`/setwebsite` — Pin website URL\n`/setupreseller` — Post reseller panel\n`/setresellerlinks` — Update reseller button links\n`/postimage` — Post an image', inline: false },
+            { name: '🌐 Server Setup', value: '`/setwebsite` — Pin website URL\n`/setupreseller` — Post reseller panel\n`/setresellerlinks` — Update reseller button links\n`/postimage` — Post an image\n`/postvideo` — Post a video embed', inline: false },
             { name: '🎫 Support Tickets', value: '`/panel` — Post the support panel\n`/clearlogs` — Clear ticket log channel\n`/reply` — Reply to a user\'s ticket', inline: false },
             { name: '🛡️ Anti-Scam (Prefix)', value: '`!bothelp` — Anti-scam command list\n`!manage` — Management panel\n`!scamcheck <text>` — Test message\n`!warnings / !clearwarnings` — Warning system\n`!nuke` — Wipe channel\n`!addlink / !removelink / !listlinks` — Manage banned links\n`!addword / !removeword` — Manage profanity filter', inline: false },
             { name: '💬 DM Commands', value: '`!close` — Close your support ticket (type in DM)', inline: false },
