@@ -26,7 +26,7 @@ function loadTickets() {
     if (fs.existsSync(TICKETS_FILE)) {
       const raw = JSON.parse(fs.readFileSync(TICKETS_FILE, 'utf8'));
       const map = new Map();
-      for (const [k, v] of Object.entries(raw)) map.set(parseInt(k), v);
+      for (const [k, v] of Object.entries(raw)) map.set(k, v);
       return map;
     }
   } catch (_) {}
@@ -142,7 +142,7 @@ async function handleInteraction(interaction, client) {
     if (!isStaff(interaction.member)) {
       await interaction.reply({ content: '❌ You don\'t have permission.', ephemeral: true }); return true;
     }
-    const uid = parseInt(interaction.options.getString('user_id'));
+    const uid = interaction.options.getString("user_id");
     const msg = interaction.options.getString('message');
     if (!activeTickets.has(uid)) {
       await interaction.reply({ content: '❌ No active ticket for that user.', ephemeral: true }); return true;
@@ -243,7 +243,7 @@ async function handleInteraction(interaction, client) {
     if (!isStaff(interaction.member)) {
       await interaction.reply({ content: '❌ No permission.', ephemeral: true }); return true;
     }
-    const uid = parseInt(interaction.customId.replace('ticket_reply_', ''));
+    const uid = interaction.customId.replace("ticket_reply_", "");
     const modal = new ModalBuilder().setCustomId(`staff_reply_modal_${uid}`).setTitle('Reply to Ticket');
     modal.addComponents(new ActionRowBuilder().addComponents(
       new TextInputBuilder().setCustomId('reply_text').setLabel('Your reply to the user')
@@ -255,7 +255,7 @@ async function handleInteraction(interaction, client) {
 
   // ── Staff reply modal submit ──
   if (interaction.isModalSubmit() && interaction.customId.startsWith('staff_reply_modal_')) {
-    const uid = parseInt(interaction.customId.replace('staff_reply_modal_', ''));
+    const uid = interaction.customId.replace("staff_reply_modal_", "");
     // Allow reply even if ticket not in memory (e.g. after redeploy)
     const user = client.users.cache.get(String(uid)) || await client.users.fetch(String(uid)).catch(() => null);
     if (!user) { await interaction.reply({ content: '❌ User not found.', ephemeral: true }); return true; }
@@ -277,7 +277,7 @@ async function handleInteraction(interaction, client) {
     if (!isStaff(interaction.member)) {
       await interaction.reply({ content: '❌ No permission.', ephemeral: true }); return true;
     }
-    const uid = parseInt(interaction.customId.replace('ticket_close_', ''));
+    const uid = interaction.customId.replace("ticket_close_", "");
     if (!activeTickets.has(uid)) {
       await interaction.reply({ content: '❌ Ticket is already closed.', ephemeral: true }); return true;
     }
