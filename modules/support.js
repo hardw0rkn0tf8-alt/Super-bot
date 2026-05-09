@@ -47,28 +47,30 @@ function isStaff(member) {
 }
 
 async function sendStaffLog(client, user, ticketData) {
-  if (!TICKET_LOG_CHANNEL) return;
-  let logCh = client.channels.cache.get(String(TICKET_LOG_CHANNEL));
-  if (!logCh) try { logCh = await client.channels.fetch(String(TICKET_LOG_CHANNEL)); } catch (_) {}
-  if (!logCh) return;
-  const embed = new EmbedBuilder()
-    .setTitle(`🎫 New Ticket — ${ticketData.type}`)
-    .setColor(0xFF8C00).setTimestamp()
-    .addFields(
-      { name: 'User',   value: `<@${user.id}>`,       inline: true },
-      { name: 'User ID',value: `\`${user.id}\``,      inline: true },
-      { name: 'Game',   value: ticketData.game,        inline: true },
-      { name: 'Type',   value: ticketData.type,        inline: true },
-      { name: 'Issue',  value: ticketData.issue,       inline: false },
-    )
-    .setThumbnail(user.displayAvatarURL())
-    .setFooter({ text: `Opened at ${ticketData.opened_at} • Esp Gang Support` });
-
-  await logCh.send({
-    content: STAFF_ROLE_ID ? `<@&${STAFF_ROLE_ID}> New ticket from **${user.username}**` : `New ticket from **${user.username}**`,
-    embeds: [embed],
-    components: [ticketActionRow(user.id)],
-  });
+  try {
+    if (!TICKET_LOG_CHANNEL) { console.error('[Tickets] TICKET_LOG_CHANNEL not set'); return; }
+    let logCh = client.channels.cache.get(String(TICKET_LOG_CHANNEL));
+    if (!logCh) try { logCh = await client.channels.fetch(String(TICKET_LOG_CHANNEL)); } catch (e) { console.error('[Tickets] Failed to fetch log channel:', e.message); }
+    if (!logCh) { console.error('[Tickets] Log channel not found:', TICKET_LOG_CHANNEL); return; }
+    const embed = new EmbedBuilder()
+      .setTitle(`🎫 New Ticket — ${ticketData.type}`)
+      .setColor(0xFF8C00).setTimestamp()
+      .addFields(
+        { name: 'User',   value: `<@${user.id}>`,       inline: true },
+        { name: 'User ID',value: `\`${user.id}\``,      inline: true },
+        { name: 'Game',   value: ticketData.game,        inline: true },
+        { name: 'Type',   value: ticketData.type,        inline: true },
+        { name: 'Issue',  value: ticketData.issue,       inline: false },
+      )
+      .setThumbnail(user.displayAvatarURL())
+      .setFooter({ text: `Opened at ${ticketData.opened_at} • Esp Gang Support` });
+    await logCh.send({
+      content: STAFF_ROLE_ID ? `<@&${STAFF_ROLE_ID}> New ticket from **${user.username}**` : `New ticket from **${user.username}**`,
+      embeds: [embed],
+      components: [ticketActionRow(user.id)],
+    });
+    console.log('[Tickets] Log sent successfully');
+  } catch (e) { console.error('[Tickets] sendStaffLog error:', e.message); }
 }
 
 function ticketActionRow(userId) {
@@ -229,7 +231,7 @@ async function handleInteraction(interaction, client) {
       return true;
     }
 
-    await sendStaffLog(client, interaction.user, { type: ticketType, game, issue: issueText, opened_at: openedAt });
+    try { await sendStaffLog(client, interaction.user, { type: ticketType, game, issue: issueText, opened_at: openedAt }); } catch (e) { console.error('[Tickets] log error:', e.message); }
 
     const reply = await interaction.followup.send({ content: '✅ I\'ve sent you a DM! Check your messages to start the support conversation.', ephemeral: true, fetchReply: true });
     setTimeout(() => reply.delete().catch(() => {}), 5000);
@@ -254,9 +256,7 @@ async function handleInteraction(interaction, client) {
   // ── Staff reply modal submit ──
   if (interaction.isModalSubmit() && interaction.customId.startsWith('staff_reply_modal_')) {
     const uid = parseInt(interaction.customId.replace('staff_reply_modal_', ''));
-    if (!activeTickets.has(uid)) {
-      await interaction.reply({ content: '❌ Ticket no longer active.', ephemeral: true }); return true;
-    }
+    // Allow reply even if ticket not in memory (e.g. after redeploy)
     const user = client.users.cache.get(String(uid)) || await client.users.fetch(String(uid)).catch(() => null);
     if (!user) { await interaction.reply({ content: '❌ User not found.', ephemeral: true }); return true; }
     try {
