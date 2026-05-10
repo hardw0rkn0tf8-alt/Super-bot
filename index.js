@@ -194,6 +194,7 @@ const ownCommands = [
   new SlashCommandBuilder().setName('postvideo').setDescription('Admin: Post a video link as an embed')
     .addStringOption(o => o.setName('url').setDescription('Streamable, YouTube or video URL').setRequired(true))
     .addStringOption(o => o.setName('title').setDescription('Optional title').setRequired(false))
+    .addStringOption(o => o.setName('caption').setDescription('Optional caption/message above the video').setRequired(false))
     .addStringOption(o => o.setName('channel').setDescription('Channel to post in').setRequired(false)),
   new SlashCommandBuilder().setName('setresellerlinks').setDescription('Admin: Update Apply and Preview Panel button links'),
   new SlashCommandBuilder().setName('commands').setDescription('Show all available bot commands'),
@@ -527,6 +528,7 @@ client.on('interactionCreate', async interaction => {
       if (cmd === 'postvideo') {
         if (!hasAccess(interaction)) return interaction.reply({ content: '❌ No permission.', flags: 64 });
         const url      = interaction.options.getString('url');
+        const caption  = interaction.options.getString('caption') || null;
         const title    = interaction.options.getString('title') || 'Video';
         const chanName = interaction.options.getString('channel') || null;
         let targetCh = interaction.channel;
@@ -534,7 +536,7 @@ client.on('interactionCreate', async interaction => {
           const found = interaction.guild.channels.cache.find(c => c.name.toLowerCase() === chanName.toLowerCase().replace('#','') && c.type === ChannelType.GuildText);
           if (found) targetCh = found;
         }
-        await targetCh.send({ content: url });
+        await targetCh.send({ content: caption ? `${caption}\n${url}` : url });
         await interaction.reply({ content: `✅ Video posted to <#${targetCh.id}>`, flags: 64 }); autoDelete(interaction, 5000);
         return;
       }
