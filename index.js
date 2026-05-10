@@ -534,19 +534,7 @@ client.on('interactionCreate', async interaction => {
           const found = interaction.guild.channels.cache.find(c => c.name.toLowerCase() === chanName.toLowerCase().replace('#','') && c.type === ChannelType.GuildText);
           if (found) targetCh = found;
         }
-        const embed = new EmbedBuilder()
-          .setColor(0x5865F2)
-          .setTitle(title)
-          .setURL(url)
-          .setDescription(`🎬 [Click to watch](${url})`)
-          .setFooter({ text: `${BOT_NAME} | ${SITE_URL}`, iconURL: client.user.displayAvatarURL() })
-          .setTimestamp();
-        // Add thumbnail for known services
-        if (url.includes('youtube.com') || url.includes('youtu.be')) {
-          const videoId = url.split('v=')[1]?.split('&')[0] || url.split('/').pop();
-          embed.setImage(`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`);
-        }
-        await targetCh.send({ embeds: [embed] });
+        await targetCh.send({ content: url });
         await interaction.reply({ content: `✅ Video posted to <#${targetCh.id}>`, flags: 64 }); autoDelete(interaction, 5000);
         return;
       }
