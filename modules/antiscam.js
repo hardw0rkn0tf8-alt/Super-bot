@@ -224,7 +224,7 @@ async function onMessage(message, client) {
   // Block ALL links except GIFs and tenor/giphy embeds
   const urlRegex = /(?:https?:\/\/|www\.)[^\s]+|(?:[a-zA-Z0-9-]+\.(?:com|net|org|gg|io|co|tv|me|app|xyz|info|biz|us|uk|ca|ru|de|fr)(?:\/[^\s]*)?)/gi;
   const allLinks = content.match(urlRegex) || [];
-  const allowedDomains = ['tenor.com', 'giphy.com', 'media.discordapp.net', 'cdn.discordapp.com', 'imgur.com'];
+  const allowedDomains = ['tenor.com', 'giphy.com', 'media.discordapp.net', 'cdn.discordapp.com', 'imgur.com', 'streamable.com', 'youtube.com', 'youtu.be', 'clips.twitch.tv', 'medal.tv', 'gyazo.com', 'i.imgur.com', 'c.tenor.com', 'media.tenor.com', 'i.giphy.com', 'media.giphy.com'];
   for (const link of allLinks) {
     const lower = link.toLowerCase();
     const isGif = lower.includes('.gif');

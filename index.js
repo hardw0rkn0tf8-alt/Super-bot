@@ -197,6 +197,16 @@ const ownCommands = [
     .addStringOption(o => o.setName('caption').setDescription('Optional caption/message above the video').setRequired(false))
     .addStringOption(o => o.setName('channel').setDescription('Channel to post in').setRequired(false)),
   new SlashCommandBuilder().setName('setresellerlinks').setDescription('Admin: Update Apply and Preview Panel button links'),
+  new SlashCommandBuilder().setName('vouch').setDescription('Submit a vouch/review for Esp Gang')
+    .addStringOption(o => o.setName('rating').setDescription('Your rating').setRequired(true).addChoices(
+      { name: '⭐ 1 Star', value: '1' },
+      { name: '⭐⭐ 2 Stars', value: '2' },
+      { name: '⭐⭐⭐ 3 Stars', value: '3' },
+      { name: '⭐⭐⭐⭐ 4 Stars', value: '4' },
+      { name: '⭐⭐⭐⭐⭐ 5 Stars', value: '5' }
+    ))
+    .addStringOption(o => o.setName('review').setDescription('Your review message').setRequired(true))
+    .addStringOption(o => o.setName('product').setDescription('Product you used').setRequired(false)),
   new SlashCommandBuilder().setName('commands').setDescription('Show all available bot commands'),
 ].map(c => c.toJSON());
 
@@ -566,6 +576,43 @@ client.on('interactionCreate', async interaction => {
         const msg = await resCh.send({ embeds: [embed], components: [row] });
         resellerMessages[gKey] = { channelId: resCh.id, messageId: msg.id };
         await interaction.editReply({ content: `✅ Reseller panel posted in <#${resCh.id}>` }); autoDelete(interaction, 5000);
+        return;
+      }
+
+      // ── /vouch ────────────────────────────────────────────────────────────
+      if (cmd === 'vouch') {
+        const VOUCH_ROLE_IDS = [
+          '1502230128938192897', // Staff
+        ];
+        const VOUCH_ROLE_NAMES = ['🤝 Real One', 'Puff puff pass', 'Staff'];
+        const member = interaction.member;
+        const hasVouchAccess = member.roles.cache.some(r =>
+          VOUCH_ROLE_IDS.includes(r.id) || VOUCH_ROLE_NAMES.some(n => r.name.toLowerCase().includes(n.toLowerCase()))
+        );
+        if (!hasVouchAccess) {
+          await interaction.reply({ content: '❌ Only verified members with a purchase role can vouch.', flags: 64 });
+          autoDelete(interaction, 5000);
+          return;
+        }
+        const rating = interaction.options.getString('rating');
+        const review = interaction.options.getString('review');
+        const product = interaction.options.getString('product') || 'Not specified';
+        const stars = '⭐'.repeat(parseInt(rating));
+        const embed = new EmbedBuilder()
+          .setColor(0x00C853)
+          .setTitle('New Vouch Submitted!')
+          .setThumbnail(interaction.user.displayAvatarURL())
+          .addFields(
+            { name: 'User:', value: interaction.user.username, inline: false },
+            { name: 'Rating:', value: stars, inline: false },
+            { name: 'Review:', value: `\`\`\`${review}\`\`\``, inline: false },
+            { name: 'Product Used:', value: `\`\`\`${product}\`\`\``, inline: false },
+          )
+          .setFooter({ text: `${BOT_NAME} | ${SITE_URL}`, iconURL: client.user.displayAvatarURL() })
+          .setTimestamp();
+        await interaction.channel.send({ embeds: [embed] });
+        await interaction.reply({ content: '✅ Your vouch has been submitted!', flags: 64 });
+        autoDelete(interaction, 5000);
         return;
       }
 
